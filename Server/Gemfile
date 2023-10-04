@@ -16,6 +16,10 @@ gem 'pg'
 # faker gem
 gem 'faker'
 
+#cors
+gem 'rack-cors'
+
+
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"

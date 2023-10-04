@@ -1,5 +1,4 @@
 import React from "react";
-import "./PetList.scss";
 
 type PetProps = {
   id: number;
@@ -30,7 +29,7 @@ const PetList: React.FC<PetProps> = ({
     <div className="pet-list">
       {!isEditing ? (
         <>
-          <img className="pet-list__image" src={image} alt={name} />
+          <div className="image"><img className="pet-list__image" src={image} alt={name} /></div>
           <h2 className="pet-list__name">{name}</h2>
           <p className="pet-list__description">{description}</p>
           <p className="pet-list__id">ID: {id}</p>

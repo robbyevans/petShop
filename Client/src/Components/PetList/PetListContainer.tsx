@@ -4,18 +4,16 @@ import { deletePet, updatePet } from "../../Redux/Slices/petSlice";
 import PetList from "./PetList";
 
 interface PetProps {
-  id: number;
-  name: string;
-  image: string;
-  description: string;
+  pet: {
+    id: number;
+    name: string;
+    image: string;
+    description: string;
+  };
 }
 
-const PetListContainer: React.FC<PetProps> = ({
-  id,
-  name,
-  image,
-  description,
-}) => {
+const PetListContainer: React.FC<PetProps> = ({ pet }) => {
+  const { id, name, image, description } = pet;
   const dispatch = useDispatch();
 
   const [isEditing, setIsEditing] = useState(false);
