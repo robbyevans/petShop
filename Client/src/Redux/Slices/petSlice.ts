@@ -1,7 +1,6 @@
-// petsSlice
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
-interface Pet {
+export interface TPet {
   id: number;
   name: string;
   image: string;
@@ -9,7 +8,7 @@ interface Pet {
 }
 
 interface PetsState {
-  pets: Pet[];
+  pets: TPet[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
@@ -22,9 +21,32 @@ const initialState: PetsState = {
 
 export const fetchPets = createAsyncThunk("pets/fetchPets", async () => {
   const response = await fetch("http://127.0.0.1:3000/pets");
-  const data = await response.json();
-  return data;
+  return response.json();
 });
+
+export const updatePet = createAsyncThunk(
+  "pets/updatePet",
+  async (pet: TPet) => {
+    const response = await fetch(`http://127.0.0.1:3000/pets/${pet.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(pet),
+    });
+    return response.json();
+  }
+);
+
+export const deletePet = createAsyncThunk(
+  "pets/deletePet",
+  async (id: number) => {
+    await fetch(`http://127.0.0.1:3000/pets/${id}`, {
+      method: "DELETE",
+    });
+    return id;
+  }
+);
 
 const petsSlice = createSlice({
   name: "pets",
@@ -35,13 +57,24 @@ const petsSlice = createSlice({
       .addCase(fetchPets.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchPets.fulfilled, (state, action: PayloadAction<Pet[]>) => {
+      .addCase(fetchPets.fulfilled, (state, action: PayloadAction<TPet[]>) => {
         state.status = "succeeded";
         state.pets = action.payload;
       })
       .addCase(fetchPets.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message || null;
+      })
+      .addCase(updatePet.fulfilled, (state, action: PayloadAction<TPet>) => {
+        const index = state.pets.findIndex(
+          (pet) => pet.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.pets[index] = action.payload;
+        }
+      })
+      .addCase(deletePet.fulfilled, (state, action: PayloadAction<number>) => {
+        state.pets = state.pets.filter((pet) => pet.id !== action.payload);
       });
   },
 });

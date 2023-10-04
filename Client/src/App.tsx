@@ -1,7 +1,12 @@
-import React from "react";
+import PetCatalogPageContainer from "./Components/PetCatalog/PetCatalogPageContainer";
+import "./Styles/index.scss";
 
 const App = () => {
-  return <div>App</div>;
+  return (
+    <div>
+      <PetCatalogPageContainer />
+    </div>
+  );
 };
 
 export default App;
