@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+  username: petshopadmin
+  password: mypassword
+  host: localhost
+
+development:
+  <<: *default
+  database: project_pet_shop_development
+
+test:
+  <<: *default
+  database: project_pet_shop_test
+
+production:
+  <<: *default
+  database: project_pet_shop_production
+  username: production_username
+  password: <%= ENV['PROJECT_PET_SHOP_DATABASE_PASSWORD'] %>
